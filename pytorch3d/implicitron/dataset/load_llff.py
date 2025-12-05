@@ -8,7 +8,7 @@ import os
 import warnings
 
 import numpy as np
-
+import shutil
 from PIL import Image
 
 
@@ -32,8 +32,6 @@ def _minify(basedir, path_manager, factors=(), resolutions=()):
         return
     assert path_manager is None
 
-    from subprocess import check_output
-
     imgdir = os.path.join(basedir, "images")
     imgs = [os.path.join(imgdir, f) for f in sorted(_ls(path_manager, imgdir))]
     imgs = [f for f in imgs if f.endswith("JPG", "jpg", "png", "jpeg", "PNG")]
@@ -55,19 +53,20 @@ def _minify(basedir, path_manager, factors=(), resolutions=()):
         logger.info(f"Minifying {r}, {basedir}")
 
         os.makedirs(imgdir)
-        check_output("cp {}/* {}".format(imgdir_orig, imgdir), shell=True)
-
+        shutil.copy()
+        # CESU
+        
         ext = imgs[0].split(".")[-1]
         args = " ".join(
             ["mogrify", "-resize", resizearg, "-format", "png", "*.{}".format(ext)]
         )
         logger.info(args)
         os.chdir(imgdir)
-        check_output(args, shell=True)
+        # CESU
         os.chdir(wd)
 
         if ext != "png":
-            check_output("rm {}/*.{}".format(imgdir, ext), shell=True)
+            # CESU
             logger.info("Removed duplicates")
         logger.info("Done")
 
